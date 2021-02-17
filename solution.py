@@ -1,108 +1,42 @@
- #import socket module
-
 from socket import *
-
-import sys # In order to terminate the program
-
+import sys
 
 
-def webServer(port):
+def webserver(port):
 
-   serverSocket = socket(AF_INET, SOCK_STREAM)
+    serversocket = socket(AF_INET, SOCK_STREAM)
+    serversocket.bind(('localhost', port))
+    serversocket.listen(5)
+    served = False
 
+    while not served:
+        print('Ready to serve...')
+        connectionsocket, addr = serversocket.accept()
 
+        try:
 
-   #Prepare a server socket
+            message = connectionsocket.recv(1024).decode()
+            filename = message.split()[1]
+            f = open(filename[1:], "r")
+            outputdata = f.read()
+            connectionsocket.send("HTTP/1.1 200 OK\r\n\r\n".encode())
+            for i in range(0, len(outputdata)):
+                connectionsocket.send(outputdata[i].encode())
+            connectionsocket.send("\r\n\r\n".encode())
+            connectionsocket.close()
 
-   #Fill in start
+        except IOError:
 
-   serverSocket.bind(('localhost', port))
+            connectionsocket.send("HTTP/1.1 404 File Not Found\r\n\r\n".encode())
+            connectionsocket.send("404 File Not Found".encode())
+            connectionsocket.close()
+        served = True
 
-   serverSocket.listen(5)
-
-   #Fill in end
-
-   served = False;
-
-
-
-   while not (served):
-
-     #Establish the connection
-
-     print('Ready to serve...')
-
-     connectionSocket, addr = serverSocket.accept()
-
-     try:
-
-       message = connectionSocket.recv(1024).decode()
-
-       filename = message.split()[1]
-
-       f = open(filename[1:], "r")
-
-       outputdata = f.read()
-
-
-
-       #Send one HTTP header line into socket
-
-       #Fill in start
-
-       connectionSocket.send("HTTP/1.1 200 OK\r\n\r\n".encode())
-
-       #Fill in end
-
-
-
-       #Send the content of the requested file to the client
-
-       for i in range(0, len(outputdata)):
-
-         connectionSocket.send(outputdata[i].encode())
-
-       connectionSocket.send("\r\n\r\n".encode())
-
-       connectionSocket.close()
-
-       served = True;
-
-     except IOError:
-
-
-
-       #Send response message for file not found (404)
-
-       #Fill in start
-
-       connectionSocket.send("HTTP/1.1 404 File Not Found\r\n\r\n".encode())
-
-       #Fill in end
-
-       connectionSocket.send("404 File Not Found".encode())
-
-       #Close client socket
-
-       #Fill in start
-
-       connectionSocket.close()
-
-       served = True;
-
-       #Fill in end
-
-
-
-   serverSocket.close()
-
-   sys.exit()  # Terminate the program after sending the corresponding data
-
-
+    serversocket.close()
+    sys.exit()
+   
 
 if __name__ == "__main__":
-
-    webServer(port=13331)
+    webserver(port=13331)
 else:
-    webServer(port=13331)
-
+    webserver(port=13331)
