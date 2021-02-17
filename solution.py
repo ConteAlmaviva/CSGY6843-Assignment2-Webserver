@@ -7,9 +7,8 @@ def webserver(port=13331):
     serversocket = socket(AF_INET, SOCK_STREAM)
     serversocket.bind(('localhost', port))
     serversocket.listen(5)
-    served = False
 
-    while not served:
+    while True:
 
         connectionsocket, addr = serversocket.accept()
 
@@ -32,8 +31,6 @@ def webserver(port=13331):
             connectionsocket.send("HTTP/1.1 404 File Not Found\r\n\r\n".encode())
             connectionsocket.send("404 File Not Found".encode())
             connectionsocket.close()
-
-        served = True
 
     serversocket.close()
     sys.exit()
