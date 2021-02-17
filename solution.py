@@ -2,7 +2,7 @@ from socket import *
 import sys
 
 
-def webserver(port):
+def webserver(port=13331):
 
     serversocket = socket(AF_INET, SOCK_STREAM)
     serversocket.bind(('localhost', port))
@@ -10,6 +10,7 @@ def webserver(port):
     served = False
 
     while not served:
+
         connectionsocket, addr = serversocket.accept()
 
         try:
@@ -19,8 +20,10 @@ def webserver(port):
             f = open(filename[1:], "r")
             outputdata = f.read()
             connectionsocket.send("HTTP/1.1 200 OK\r\n\r\n".encode())
+
             for i in range(0, len(outputdata)):
                 connectionsocket.send(outputdata[i].encode())
+
             connectionsocket.send("\r\n\r\n".encode())
             connectionsocket.close()
 
@@ -29,6 +32,7 @@ def webserver(port):
             connectionsocket.send("HTTP/1.1 404 File Not Found\r\n\r\n".encode())
             connectionsocket.send("404 File Not Found".encode())
             connectionsocket.close()
+
         served = True
 
     serversocket.close()
@@ -36,4 +40,4 @@ def webserver(port):
    
 
 if __name__ == "__main__":
-    webserver(port=13331)
+    webserver(13331)
