@@ -10,7 +10,6 @@ def webserver(port):
     served = False
 
     while not served:
-        print('Ready to serve...')
         connectionsocket, addr = serversocket.accept()
 
         try:
