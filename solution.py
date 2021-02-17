@@ -38,5 +38,4 @@ def webserver(port):
 
 
 if __name__ == "__main__":
-    myport = 13331
-    webserver(myport)
+    webserver(13331)
