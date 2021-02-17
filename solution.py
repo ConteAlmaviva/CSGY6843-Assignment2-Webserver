@@ -102,5 +102,7 @@ def webServer(port):
 
 if __name__ == "__main__":
 
-   webServer(port=13331)
+    webServer(port=13331)
+else:
+    webServer(port=13331)
 
