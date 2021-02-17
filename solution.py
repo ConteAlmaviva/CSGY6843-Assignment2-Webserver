@@ -1,6 +1,5 @@
 #import socket module
 from socket import *
-
 import sys # In order to terminate the program
 
 def webServer(port=13331):
@@ -14,7 +13,6 @@ def webServer(port=13331):
 
    while True:
      #Establish the connection
-     print('Ready to serve...')
      connectionSocket, addr = serverSocket.accept()
      try:
        message = connectionSocket.recv(1024).decode()
