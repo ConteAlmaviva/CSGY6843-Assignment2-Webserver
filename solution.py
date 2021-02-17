@@ -38,5 +38,3 @@ def webserver(port):
 
 if __name__ == "__main__":
     webserver(port=13331)
-else:
-    webserver(port=13331)
