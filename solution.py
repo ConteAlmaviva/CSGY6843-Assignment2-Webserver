@@ -10,9 +10,9 @@ def webServer(port):
    serverSocket.bind(('localhost', port))
    serverSocket.listen(5)
    #Fill in end
-   served = False;
+   #served = False
 
-   while not (served):
+   while True:
      #Establish the connection
      print('Ready to serve...')
      connectionSocket, addr = serverSocket.accept()
@@ -32,7 +32,7 @@ def webServer(port):
          connectionSocket.send(outputdata[i].encode())
        connectionSocket.send("\r\n\r\n".encode())
        connectionSocket.close()
-       served = True
+       #served = True
      except IOError:
 
        #Send response message for file not found (404)
@@ -43,7 +43,7 @@ def webServer(port):
        #Close client socket
        #Fill in start
        connectionSocket.close()
-       served = True
+       #served = True
        #Fill in end
 
    serverSocket.close()
